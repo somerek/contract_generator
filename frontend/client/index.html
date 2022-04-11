@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -38,7 +39,10 @@
                 <label for="name" class="mr-3">{{status_message}}</label>
             </form>
             <form class="form-inline mb-3" @submit.prevent>
-                <div v-if="link">
+                <div v-if="loading">
+                    <loader />
+                </div>
+                <div v-else-if="link">
                     <a :href="link" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Download
                         PDF</a>
                 </div>

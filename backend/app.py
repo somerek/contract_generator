@@ -13,6 +13,7 @@ api = Api(app)
 CORS(app)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://POSTGRES_USER:POSTGRES_PASSWORD@contract_db:5432/POSTGRES_DB"
+# app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://db_user:db_pass_123@localhost:5432/contract_db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -89,7 +90,7 @@ api.add_resource(DownloadContract, '/contract/api/v1.0/contract-download/<int:nu
 
 if __name__ == '__main__':
     # db.create_all()
-    #app.run(debug=True)
+    app.run(debug=True)
     app.run(host='0.0.0.0')
 
 # docker build -t contract_db_img --build-arg POSTGRES_USER=db_user --build-arg POSTGRES_PASSWORD=db_pass_123 --build-arg POSTGRES_DB=contract_db .
