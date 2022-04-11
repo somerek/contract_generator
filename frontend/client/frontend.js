@@ -4,29 +4,28 @@ new Vue({
     el: '#app',
     data() {
         return {
+            root_url: 'http://backend_host_port/contract/api/v1.0/',
             contract: {
                 firstName: '',
                 lastName: ''
             },
-            contractId: 0,
-            link: 'test',
+            link: '',
             status_message: ''
-
         }
     },
     computed: {
         canCreate() {
-            const result = this.contract.firstName.trim()
+            const result = this.contract.firstName.trim() && this.contract.lastName.trim()
             console.log('canCreate:', result)
             return result
-        }
+        },
     },
     methods: {
         async applyContract() {
             this.status_message = 'Please wait...'
-            const {...contract} = this.contract
-            this.contractId = await request('apply-cintract', 'POST', contract)
-            this.link = this.contractId
+            const { ...contract } = this.contract
+            const contractId = await request(this.root_url + 'apply-contract', 'POST', contract)
+            this.link = this.root_url + 'contract-download/' + contractId
             console.log('createContent:', this.link)
             this.status_message = 'Saved'
         },
@@ -38,15 +37,13 @@ new Vue({
 
 async function request(url, method = 'GET', data = null) {
     try {
-        const root_url = 'http://backend_host_port/contract/api/v1.0/'
-        const full_url = root_url + url
         const headers = {}
         let body
         if (data) {
             headers['Content-Type'] = 'application/json'
             body = JSON.stringify(data)
         }
-        const response = await fetch(full_url, {
+        const response = await fetch(url, {
             method,
             headers,
             body

@@ -48,7 +48,7 @@ class DownloadContract(Resource):
 
         outputText = template.render(first_name=contract_json[0].firstName,
                                      last_name=contract_json[0].lastName)
-        html_file = open('contract.html', 'w')
+        html_file = open('contract.html', 'w', encoding='utf-8')
         html_file.write(outputText)
         html_file.close()
         pdfkit.from_file('contract.html', 'contract.pdf')
@@ -67,7 +67,7 @@ class AddContractAPI(Resource):
                                    location='json')
         super(AddContractAPI, self).__init__()
 
-    # curl -i -H "Content-Type: application/json" -X POST -d '{"firstName":"petya", "lastName":"petrov"}' http://localhost:5000/contract/api/v1.0/apply-cintract
+    # curl -i -H "Content-Type: application/json" -X POST -d '{"firstName":"petya", "lastName":"petrov"}' http://localhost:5000/contract/api/v1.0/apply-contract
     def post(self):
         args = self.reqparse.parse_args()
         contract_row = Contract()  # table row
@@ -83,7 +83,7 @@ class AddContractAPI(Resource):
         return contract_row.contractId
 
 
-api.add_resource(AddContractAPI, '/contract/api/v1.0/apply-cintract', endpoint='contract')
+api.add_resource(AddContractAPI, '/contract/api/v1.0/apply-contract', endpoint='contract')
 api.add_resource(DownloadContract, '/contract/api/v1.0/contract-download/<int:num_contract>',
                  endpoint='tracks_for_year')
 
@@ -93,7 +93,7 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0')
 
 # docker build -t flask_db --build-arg POSTGRES_USER=flask --build-arg POSTGRES_PASSWORD=flask --build-arg POSTGRES_DB=flask .
-# docker run -d -p 5432:5432 --name flask_pg flask_db
+# docker run -d -p 5432:5432 --name contract_db flask_db
 
 # flask db init
 # flask db migrate -m "Initial migration."
