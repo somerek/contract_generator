@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+    <title>Contract generator</title>
+    <style>
+        [v-cloak] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container pt-3" id="app" v-cloak>
+        <h1>Contract generator</h1>
+        <div class="container pt-3" id="app" v-cloak>
+            <form class="form-inline mb-3" @submit.prevent>
+                <label for="name" class="mr-3">First Name</label>
+                <input type="text" class="form-control" placeholder="First Name" id="firstName"
+                    v-model="contract.firstName">
+            </form>
+            <form class="form-inline mb-3" @submit.prevent>
+                <label for="name" class="mr-3">Last Name</label>
+                <input type="text" class="form-control" placeholder="Last Name" id="lastName"
+                    v-model="contract.lastName">
+            </form>
+            <form class="form-inline mb-3" @submit.prevent>
+                <div class="form-group mr-5">
+                    <button class="btn btn-primary" @click="applyContract()" :disabled="!canCreate">Apply</button>
+                </div>
+            </form>
+        </div>
+
+        <form class="form-inline mb-3" @submit.prevent>
+            <label for="name" class="mr-3">http://backend_host_port/contract/api/v1.0/contract-download/{{link}}</label>
+        </form>
+        <form class="form-inline mb-3" @submit.prevent>
+            <label for="name" class="mr-3">{{status_message}}</label>
+        </form>
+    </div>
+
+    </div>
+
+    <script type="module" src="frontend.js"></script>
+    <footer class="container pt-4 my-md-5 pt-md-5 border-top">
+        <div class="row">
+            <div class="col-12 col-md">
+                <small class="d-block mb-3 text-muted">© 2022</small>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,84 @@
+version: '3'
+
+services:
+  db:
+    container_name: contract_db
+    image: contract_db_image
+    build: 
+      context: .
+      args:
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        - POSTGRES_DB=${POSTGRES_DB}
+    restart: always
+    networks:
+      - back
+    volumes:
+    - db-volume:/var/lib/postgresql/data
+    healthcheck:
+      #test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    container_name: contract_backend
+    image: contract_backend_image
+    build: 
+      context: backend
+      args:
+        - POSTGRES_USER=${POSTGRES_USER}
+        - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+        - POSTGRES_DB=${POSTGRES_DB}
+    restart: always
+    networks:
+      - front
+      - back
+    ports:
+      - "5000:5000"
+    #depends_on:
+    #  db:
+    #    condition: service_healthy
+    #healthcheck:
+      # test: curl --fail http://localhost:5000/contract/api/v1.0/contract-download/7 || exit 1
+    #  interval: 5s
+    #  timeout: 5s
+    #  retries: 5
+
+  frontend:
+    container_name: contract_frontend
+    image: ocntract_frontend_image
+    build:
+      context: frontend
+      args:
+        - backent_host_port=${backent_host_port}
+    restart: always
+    networks:
+      - front
+    ports:
+      - "8081:3000"
+    healthcheck:
+      test: wget -nv -t1 --spider http://localhost:3000/ || exit 1
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  db-volume:
+
+networks:
+  front:
+    name: front-network
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.8.0/24
+          gateway: 192.168.8.1
+  back:
+    name: back-network
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 192.168.9.0/24
+          gateway: 192.168.9.1
