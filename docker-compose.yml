@@ -16,7 +16,7 @@ services:
     volumes:
     - db-volume:/var/lib/postgresql/data
     healthcheck:
-      #test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -36,11 +36,11 @@ services:
       - back
     ports:
       - "5000:5000"
-    #depends_on:
-    #  db:
-    #    condition: service_healthy
+    depends_on:
+      db:
+        condition: service_healthy
     #healthcheck:
-      # test: curl --fail http://localhost:5000/contract/api/v1.0/contract-download/7 || exit 1
+    #  test: curl --fail http://localhost:5000/contract/api/v1.0/contract-download/7 || exit 1
     #  interval: 5s
     #  timeout: 5s
     #  retries: 5
