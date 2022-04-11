@@ -92,13 +92,13 @@ if __name__ == '__main__':
     #app.run(debug=True)
     app.run(host='0.0.0.0')
 
-# docker build -t flask_db --build-arg POSTGRES_USER=flask --build-arg POSTGRES_PASSWORD=flask --build-arg POSTGRES_DB=flask .
-# docker run -d -p 5432:5432 --name contract_db flask_db
+# docker build -t contract_db_img --build-arg POSTGRES_USER=db_user --build-arg POSTGRES_PASSWORD=db_pass_123 --build-arg POSTGRES_DB=contract_db .
+# docker run -d -p 5432:5432 --name contract_db contract_db_img
 
 # flask db init
 # flask db migrate -m "Initial migration."
 # flask db upgrade
 
-# docker exec -it flask_pg sh
-# psql -U flask -d flask
+# docker exec -it contract_db sh
+# psql -U db_user -d contract_db
 # \dt;
